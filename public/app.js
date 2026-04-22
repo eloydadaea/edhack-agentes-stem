@@ -5,11 +5,34 @@ document.getElementById('stemForm').addEventListener('submit', async (e) => {
     const loader = document.getElementById('loader');
     const resultsDiv = document.getElementById('results');
     const btn = document.getElementById('submitBtn');
+    const statusText = document.getElementById('loaderStatus');
 
     // UI Updates
     loader.classList.remove('hidden');
     resultsDiv.classList.add('hidden');
     btn.disabled = true;
+
+    // --- MAGIA VISUAL: Mensajes rotativos ---
+    const messages = [
+        "🔍 Agente Investigador: Consultando Gemini 2.5 Flash...",
+        "⚙️ Verificando disponibilidad y cuotas de API...",
+        "✅ Agente Verificador: Estructurando contenido pedagógico...",
+        "🔄 Manteniendo red estable (Modelos de respaldo en guardia)...",
+        "🎓 Agente Pedagógico: Diseñando el caso clínico interactivo...",
+        "📝 Agente Evaluador: Construyendo rúbrica de calificación...",
+        "🚀 Consolidando el reporte final. ¡Casi listo!"
+    ];
+    
+    let messageIndex = 0;
+    statusText.innerText = messages[0];
+    
+    // Cambiar el mensaje cada 3.5 segundos para mantener al usuario atento
+    const loadingInterval = setInterval(() => {
+        messageIndex++;
+        if (messageIndex < messages.length) {
+            statusText.innerText = messages[messageIndex];
+        }
+    }, 3500);
 
     try {
         const response = await fetch('/api/generate', {
@@ -22,35 +45,28 @@ document.getElementById('stemForm').addEventListener('submit', async (e) => {
 
         const data = await response.json();
 
-        // Renderizar resultados
+        // Renderizar resultados con MARKED.PARSE para que se vea hermoso
         resultsDiv.innerHTML = `
             <div class="agent-card">
-                <h3>🔍 1. Agente Investigador (Fuentes)</h3>
-                <p>${formatText(data.investigacion)}</p>
+                <div class="markdown-content">${marked.parse(data.investigacion)}</div>
             </div>
             <div class="agent-card">
-                <h3>✅ 2. Agente Verificador (Validación Escolar)</h3>
-                <p>${formatText(data.validacion)}</p>
+                <div class="markdown-content">${marked.parse(data.validacion)}</div>
             </div>
             <div class="agent-card">
-                <h3>🎓 3. Agente Pedagógico (Caso Clínico/Actividad)</h3>
-                <p>${formatText(data.casoEstudio)}</p>
+                <div class="markdown-content">${marked.parse(data.casoEstudio)}</div>
             </div>
             <div class="agent-card">
-                <h3>📝 4. Agente Evaluador (Rúbrica y Preguntas)</h3>
-                <p>${formatText(data.evaluacion)}</p>
+                <div class="markdown-content">${marked.parse(data.evaluacion)}</div>
             </div>
         `;
         resultsDiv.classList.remove('hidden');
     } catch (error) {
         alert('Hubo un error procesando la solicitud. Revisa los logs.');
     } finally {
+        // Limpiamos todo cuando termine
+        clearInterval(loadingInterval);
         loader.classList.add('hidden');
         btn.disabled = false;
     }
 });
-
-function formatText(text) {
-    // Convierte saltos de línea en <br> para HTML simple
-    return text.replace(/\n/g, '<br>');
-}

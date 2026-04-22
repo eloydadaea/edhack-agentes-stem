@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>STEM Multi-Agent EdHack</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Generador de Casos Científicos STEM</h1>
-            <p>Impulsado por un sistema multiagente</p>
+            <p>Impulsado por un sistema multiagente (Alta Disponibilidad)</p>
         </header>
 
         <main>
@@ -21,7 +22,10 @@
 
             <div id="loader" class="hidden">
                 <div class="spinner"></div>
-                <p id="loaderStatus">Agente Investigador trabajando...</p>
+                <div class="status-box">
+                    <p id="loaderStatus" class="highlight-text">Iniciando Orquestador...</p>
+                    <p class="sub-status">Sistema Multi-LLM: Intentando Gemini 2.5 ➔ Gemini 1.5 ➔ GPT</p>
+                </div>
             </div>
 
             <div id="results" class="hidden">
