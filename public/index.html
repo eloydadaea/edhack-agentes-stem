@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEM Multi-Agent EdHack</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Generador de Casos Científicos STEM</h1>
+            <p>Impulsado por un sistema multiagente</p>
+        </header>
+
+        <main>
+            <form id="stemForm">
+                <input type="text" id="topicInput" placeholder="Ej: La fotosíntesis en condiciones de microgravedad..." required>
+                <button type="submit" id="submitBtn">Generar Caso</button>
+            </form>
+
+            <div id="loader" class="hidden">
+                <div class="spinner"></div>
+                <p id="loaderStatus">Agente Investigador trabajando...</p>
+            </div>
+
+            <div id="results" class="hidden">
+                </div>
+        </main>
+    </div>
+    <script src="/app.js"></script>
+</body>
+</html>
